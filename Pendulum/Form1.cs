@@ -28,9 +28,30 @@ namespace Pendulum
             progressBarTime.Value = 0;
         }
 
+        public Form2 f;
+
+        public Screen[] sc;
+        
         private void Form1_Load(object sender, EventArgs e)
         {
-            //showOnMonitor1();
+            sc = Screen.AllScreens;
+            //var scValue = sc.Max();
+            //var scIndex = sc.ToList().IndexOf(scValue);
+
+            int scIndex = sc.GetUpperBound(0);
+
+            if (scIndex == 0)
+            {
+                showOnMonitor1();
+            }
+            else if (scIndex == 1)
+            {
+                showOnMonitor2();
+            }
+            else if (scIndex == 2)
+            {
+                showOnMonitor3();
+            }
         }
 
         private void showOnMonitor1()
@@ -38,18 +59,18 @@ namespace Pendulum
             intPublicM = m;
             intPublicS = s;
 
-            Screen[] sc;
-            sc = Screen.AllScreens;
-            //get all the screen width and heights 
-            Form2 f = new Form2(this);
-            //f.FormBorderStyle = FormBorderStyle.None;
+            //Screen[] sc;
+            //sc = Screen.AllScreens;
+            //get all the screen width and heights
+            f = new Form2(this);
+            f.FormBorderStyle = FormBorderStyle.None;
             f.Left = sc[0].Bounds.Width;
             f.Top = sc[0].Bounds.Height;
             f.StartPosition = FormStartPosition.Manual;
             f.Location = sc[0].Bounds.Location;
             Point p = new Point(sc[0].Bounds.Location.X, sc[0].Bounds.Location.Y);
             f.Location = p;
-            //f.WindowState = FormWindowState.Maximized;
+            f.WindowState = FormWindowState.Maximized;
             f.Show();
         }
 
@@ -58,11 +79,11 @@ namespace Pendulum
             intPublicM = m;
             intPublicS = s;
 
-            Screen[] sc;
-            sc = Screen.AllScreens;
+            //Screen[] sc;
+            //sc = Screen.AllScreens;
             //get all the screen width and heights 
-            Form2 f = new Form2(this);
-            f.FormBorderStyle = FormBorderStyle.None;
+            f = new Form2(this);
+            //f.FormBorderStyle = FormBorderStyle.None;
             f.Left = sc[1].Bounds.Width;
             f.Top = sc[1].Bounds.Height;
             f.StartPosition = FormStartPosition.Manual;
@@ -73,36 +94,66 @@ namespace Pendulum
             f.Show();
         }
 
+        private void showOnMonitor3()
+        {
+            intPublicM = m;
+            intPublicS = s;
+
+            //Screen[] sc;
+            //sc = Screen.AllScreens;
+            //get all the screen width and heights 
+            f = new Form2(this);
+            //f.FormBorderStyle = FormBorderStyle.None;
+            f.Left = sc[2].Bounds.Width;
+            f.Top = sc[2].Bounds.Height;
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = sc[2].Bounds.Location;
+            Point p = new Point(sc[2].Bounds.Location.X, sc[2].Bounds.Location.Y);
+            f.Location = p;
+            f.WindowState = FormWindowState.Maximized;
+            f.Show();
+        }
+
         private void StartButton_Click(object sender, EventArgs e)
         {
             if (boolOvertime == false)
             {
                 timerDown.Start();
+                f.CountDownStart();
             }
             else
             {
                 timerUp.Start();
+                f.CountUpStart();
             }
-
-            showOnMonitor1();
             
             buttonStart.Enabled = false;
+            buttonStart.BackColor = SystemColors.Control;
             buttonStop.Enabled = true;
+            buttonStop.BackColor = Color.Red;
             buttonPlus1.Enabled = false;
+            buttonPlus1.BackColor = SystemColors.Control;
             buttonMinus1.Enabled = false;
+            buttonMinus1.BackColor = SystemColors.Control;
         }
 
         private void StopButton_Click(object sender, EventArgs e)
         {
             timerDown.Stop();
             timerUp.Stop();
+            f.CountDownStop();
+            f.CountUpStop();
             buttonStart.Enabled = true;
+            buttonStart.BackColor = Color.Lime;
             buttonStop.Enabled = false;
+            buttonStop.BackColor = SystemColors.Control;
             buttonPlus1.Enabled = true;
+            buttonPlus1.BackColor = Color.Orange;
             buttonMinus1.Enabled = true;
+            buttonMinus1.BackColor = Color.Orange;
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void timerDown_Tick(object sender, EventArgs e)
         {
             string stringM;
             string stringS;
@@ -115,11 +166,11 @@ namespace Pendulum
                 s = 59;
             }
 
-            if (m != 0 || s != 0)
+            if (m > 0 || s > 0)
             {
                 progressBarTime.Value = (m * 60) + s;
             }
-            else if (m == 0)
+            else if (m == 0 && s > 0)
             {
                 progressBarTime.Value = s;
             }
@@ -131,12 +182,19 @@ namespace Pendulum
             {
                 progressBarTime.Value = 0;
                 labelTime.ForeColor = Color.Red;
+                if (checkBoxSound.Checked)
+                {
+                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"C:\Windows\Media\Ring01.wav");
+                    player.Play();
+                }
             }
 
             if (m == 0 && s == 0)
             {
                 timerDown.Stop();
                 timerUp.Start();
+                f.CountDownStop();
+                f.CountUpStart();
                 boolOvertime = true;
             }
 
@@ -183,9 +241,13 @@ namespace Pendulum
             m = m + 1;
             s = 0;
 
+            intPublicM = m;
+            intPublicS = s;
+
             if (m > 30)
             {
                 m = 30;
+                intPublicM = m;
             }
 
             if (m < 10)
@@ -201,8 +263,11 @@ namespace Pendulum
 
             progressBarTime.Maximum = m * 60;
             progressBarTime.Value = 0;
+            
 
             labelTime.ForeColor = Color.Lime;
+            
+            f.UpdateLabel(this.labelTime.Text, (m * 60),0);
         }
 
         private void buttonMinus_Click(object sender, EventArgs e)
@@ -212,9 +277,13 @@ namespace Pendulum
             m = m - 1;
             s = 0;
 
+            intPublicM = m;
+            intPublicS = s;
+
             if (m < 1)
             {
                 m = 1;
+                intPublicM = m;
             }
 
             if (m < 10)
@@ -232,6 +301,8 @@ namespace Pendulum
             progressBarTime.Value = 0;
 
             labelTime.ForeColor = Color.Lime;
+
+            f.UpdateLabel(this.labelTime.Text, (m * 60), 0);
         }
 
         private void timerUp_Tick(object sender, EventArgs e)
@@ -271,6 +342,18 @@ namespace Pendulum
 
             labelTime.Text = stringM + ":" + stringS;
 
+        }
+
+        private void checkBoxSound_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxSound.Checked)
+            {
+                pictureBoxSound.Image = Properties.Resources.SoundOn;
+            }
+            else
+            {
+                pictureBoxSound.Image = Properties.Resources.SoundOff;
+            }
         }
     }
 }
