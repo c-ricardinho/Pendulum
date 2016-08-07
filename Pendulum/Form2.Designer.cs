@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.TimerProgressBar = new System.Windows.Forms.ProgressBar();
-            this.TimerLabel = new System.Windows.Forms.Label();
+            this.labelTime = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
@@ -46,27 +46,27 @@
             this.TimerProgressBar.TabIndex = 1;
             this.TimerProgressBar.Value = 50;
             // 
-            // TimerLabel
+            // labelTime
             // 
-            this.TimerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.labelTime.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TimerLabel.BackColor = System.Drawing.Color.Black;
-            this.TimerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 99.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TimerLabel.ForeColor = System.Drawing.Color.Lime;
-            this.TimerLabel.Location = new System.Drawing.Point(3, 0);
-            this.TimerLabel.Name = "TimerLabel";
-            this.TimerLabel.Size = new System.Drawing.Size(754, 508);
-            this.TimerLabel.TabIndex = 2;
-            this.TimerLabel.Text = "00:00";
-            this.TimerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelTime.BackColor = System.Drawing.Color.Black;
+            this.labelTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 99.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTime.ForeColor = System.Drawing.Color.Lime;
+            this.labelTime.Location = new System.Drawing.Point(3, 0);
+            this.labelTime.Name = "labelTime";
+            this.labelTime.Size = new System.Drawing.Size(754, 508);
+            this.labelTime.TabIndex = 2;
+            this.labelTime.Text = "00:00";
+            this.labelTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.TimerLabel);
+            this.panel1.Controls.Add(this.labelTime);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(760, 508);
@@ -87,7 +87,6 @@
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pendulum [Screen 2]";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form2_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -97,7 +96,7 @@
         #endregion
 
         private System.Windows.Forms.ProgressBar TimerProgressBar;
-        private System.Windows.Forms.Label TimerLabel;
+        private System.Windows.Forms.Label labelTime;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Timer timer1;
     }

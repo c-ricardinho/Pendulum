@@ -12,32 +12,30 @@ namespace Pendulum
 {
     public partial class Form2 : Form
     {
-        private Form1 formForm1;
+        int m;
+        int s;
 
-        private void getTimerInfo()
+        Form1 originalForm;
+        public Form2(Form1 incomingForm)
         {
-            //string mm = Convert.ToString(formForm1.intM);
-            //string ss = Convert.ToString(formForm1.intS);
-
-            //TimerLabel.Text = mm + ":" + ss;
-        }
-
-        public Form2()
-        {
+            originalForm = incomingForm;
             InitializeComponent();
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            TimerLabel.Font = new Font(TimerLabel.Font.FontFamily.Name, 400);
-            getTimerInfo();
+            labelTime.Font = new Font(labelTime.Font.FontFamily.Name, 50);
+            m = originalForm.intPublicM;
+            s = originalForm.intPublicS;
 
-            //string mm = Convert.ToString(formForm1.intM);
-            //string ss = Convert.ToString(formForm1.intS);
-
-            //TimerLabel.Text = mm + ":" + ss;
-
-            
+            if (m < 10)
+            {
+                labelTime.Text = "0" + Convert.ToString(m) + ":00";
+            }
+            else
+            {
+                labelTime.Text = Convert.ToString(m) + ":00";
+            }
         }
 
         

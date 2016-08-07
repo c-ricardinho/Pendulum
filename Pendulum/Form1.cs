@@ -15,6 +15,9 @@ namespace Pendulum
         int m = 1;
         int s = 0;
 
+        public int intPublicM;
+        public int intPublicS;
+        
         bool boolOvertime = false;
 
         public Form1()
@@ -32,27 +35,33 @@ namespace Pendulum
 
         private void showOnMonitor1()
         {
+            intPublicM = m;
+            intPublicS = s;
+
             Screen[] sc;
             sc = Screen.AllScreens;
             //get all the screen width and heights 
-            Form2 f = new Form2();
-            f.FormBorderStyle = FormBorderStyle.None;
+            Form2 f = new Form2(this);
+            //f.FormBorderStyle = FormBorderStyle.None;
             f.Left = sc[0].Bounds.Width;
             f.Top = sc[0].Bounds.Height;
             f.StartPosition = FormStartPosition.Manual;
             f.Location = sc[0].Bounds.Location;
             Point p = new Point(sc[0].Bounds.Location.X, sc[0].Bounds.Location.Y);
             f.Location = p;
-            f.WindowState = FormWindowState.Maximized;
+            //f.WindowState = FormWindowState.Maximized;
             f.Show();
         }
 
         private void showOnMonitor2()
         {
+            intPublicM = m;
+            intPublicS = s;
+
             Screen[] sc;
             sc = Screen.AllScreens;
             //get all the screen width and heights 
-            Form2 f = new Form2();
+            Form2 f = new Form2(this);
             f.FormBorderStyle = FormBorderStyle.None;
             f.Left = sc[1].Bounds.Width;
             f.Top = sc[1].Bounds.Height;
@@ -74,6 +83,8 @@ namespace Pendulum
             {
                 timerUp.Start();
             }
+
+            showOnMonitor1();
             
             buttonStart.Enabled = false;
             buttonStop.Enabled = true;
