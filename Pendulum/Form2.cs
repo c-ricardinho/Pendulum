@@ -66,7 +66,7 @@ namespace Pendulum
         private void Form2_Load(object sender, EventArgs e)
         {
             labelText.Font = new Font(labelTime.Font.FontFamily.Name, 100);
-            labelTime.Font = new Font(labelTime.Font.FontFamily.Name, 400);
+            labelTime.Font = new Font(labelTime.Font.FontFamily.Name, 350);
             m = originalForm.intPublicM;
             s = originalForm.intPublicS;
 
