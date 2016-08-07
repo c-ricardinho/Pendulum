@@ -16,10 +16,10 @@ namespace Pendulum
 
         private void getTimerInfo()
         {
-            string mm = Convert.ToString(formForm1.intM);
-            string ss = Convert.ToString(formForm1.intS);
+            //string mm = Convert.ToString(formForm1.intM);
+            //string ss = Convert.ToString(formForm1.intS);
 
-            TimerLabel.Text = mm + ":" + ss;
+            //TimerLabel.Text = mm + ":" + ss;
         }
 
         public Form2()
