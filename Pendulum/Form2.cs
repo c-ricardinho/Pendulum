@@ -41,6 +41,7 @@ namespace Pendulum
             labelText.Text = "Time Remaining:";
             labelText.ForeColor = Color.Lime;
             labelTime.ForeColor = Color.Lime;
+            labelClock.ForeColor = Color.Lime;
         }
 
         public void CountDownStart()
@@ -111,6 +112,7 @@ namespace Pendulum
                 labelText.Text = "TIME IS UP!";
                 labelText.ForeColor = Color.Red;
                 labelTime.ForeColor = Color.Red;
+                labelClock.ForeColor = Color.Red;
             }
 
             if (m == 0 && s == 0)
@@ -149,6 +151,7 @@ namespace Pendulum
             {
                 labelText.ForeColor = Color.Orange;
                 labelTime.ForeColor = Color.Orange;
+                labelClock.ForeColor = Color.Orange;
             }
             else if (doublePercent == 0)
             {
@@ -204,7 +207,7 @@ namespace Pendulum
         private void timerClock_Tick(object sender, EventArgs e)
         {
             DateTime dateTime = DateTime.Now;
-            this.labelClock.Text = dateTime.ToString("dddd MMMM dd, yyyy - HH:mm:ss");
+            this.labelClock.Text = "Current Time: " + dateTime.ToString("HH:mm:ss");
         }
     }
 }

@@ -34,6 +34,25 @@ namespace Pendulum
         
         private void Form1_Load(object sender, EventArgs e)
         {
+            timerClock.Start();
+
+            System.Windows.Forms.ToolTip ToolTip1 = new System.Windows.Forms.ToolTip();
+            ToolTip1.SetToolTip(this.buttonStart, "Start timer"
+                + Environment.NewLine
+                + "Shortcut: CTRL + Enter");
+            ToolTip1.SetToolTip(this.buttonStop, "Stop timer"
+                + Environment.NewLine
+                + "Shortcut: CTRL + Enter");
+            ToolTip1.SetToolTip(this.buttonMinus1, "Minus 1 minute from timer" 
+                + Environment.NewLine  
+                + "Shortcut: CTRL + [");
+            ToolTip1.SetToolTip(this.buttonPlus1, "Plus 1 minute to timer" 
+                + Environment.NewLine 
+                + "Shortcut: CTRL + ]");
+            ToolTip1.SetToolTip(this.buttonSound, "Enable or disable 'Time is up!' sound"
+                + Environment.NewLine
+                + "Shortcut: CTRL + S");
+
             sc = Screen.AllScreens;
             //var scValue = sc.Max();
             //var scIndex = sc.ToList().IndexOf(scValue);
@@ -135,6 +154,8 @@ namespace Pendulum
             buttonPlus1.BackColor = SystemColors.Control;
             buttonMinus1.Enabled = false;
             buttonMinus1.BackColor = SystemColors.Control;
+
+            groupBoxPresets.Enabled = false;
         }
 
         private void StopButton_Click(object sender, EventArgs e)
@@ -151,6 +172,8 @@ namespace Pendulum
             buttonPlus1.BackColor = Color.Orange;
             buttonMinus1.Enabled = true;
             buttonMinus1.BackColor = Color.Orange;
+
+            groupBoxPresets.Enabled = true;
         }
 
         private void timerDown_Tick(object sender, EventArgs e)
@@ -182,7 +205,9 @@ namespace Pendulum
             {
                 progressBarTime.Value = 0;
                 labelTime.ForeColor = Color.Red;
-                if (checkBoxSound.Checked)
+                labelLength.ForeColor = Color.Red;
+                labelClock.ForeColor = Color.Red;
+                if (buttonSound.BackColor == Color.Lime)
                 {
                     System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"C:\Windows\Media\Ring01.wav");
                     player.Play();
@@ -227,10 +252,14 @@ namespace Pendulum
             if ((doublePercent <= 0.1) && (doublePercent > 0))
             {
                 labelTime.ForeColor = Color.Orange;
+                labelLength.ForeColor = Color.Orange;
+                labelClock.ForeColor = Color.Orange;
             }
             else if (doublePercent == 0)
             {
                 labelTime.ForeColor = Color.Red;
+                labelLength.ForeColor = Color.Red;
+                labelClock.ForeColor = Color.Red;
             }
         }
 
@@ -252,12 +281,12 @@ namespace Pendulum
 
             if (m < 10)
             {
-                labelLength.Text = "0" + Convert.ToString(m) + ":00";
+                labelLength.Text = "Talk Length: 0" + Convert.ToString(m) + ":00";
                 labelTime.Text = "0" + Convert.ToString(m) + ":00";
             }
             else
             {
-                labelLength.Text = Convert.ToString(m) + ":00";
+                labelLength.Text = "Talk Length: " + Convert.ToString(m) + ":00";
                 labelTime.Text = Convert.ToString(m) + ":00";
             }
 
@@ -266,7 +295,10 @@ namespace Pendulum
             
 
             labelTime.ForeColor = Color.Lime;
-            
+            labelLength.ForeColor = Color.Lime;
+            labelClock.ForeColor = Color.Lime;
+
+
             f.UpdateLabel(this.labelTime.Text, (m * 60),0);
         }
 
@@ -288,12 +320,12 @@ namespace Pendulum
 
             if (m < 10)
             {
-                labelLength.Text = "0" + Convert.ToString(m) + ":00";
+                labelLength.Text = "Talk Length: 0" + Convert.ToString(m) + ":00";
                 labelTime.Text = "0" + Convert.ToString(m) + ":00";
             }
             else
             {
-                labelLength.Text = Convert.ToString(m) + ":00";
+                labelLength.Text = "Talk Length: " + Convert.ToString(m) + ":00";
                 labelTime.Text = Convert.ToString(m) + ":00";
             }
 
@@ -301,6 +333,8 @@ namespace Pendulum
             progressBarTime.Value = 0;
 
             labelTime.ForeColor = Color.Lime;
+            labelLength.ForeColor = Color.Lime;
+            labelClock.ForeColor = Color.Lime;
 
             f.UpdateLabel(this.labelTime.Text, (m * 60), 0);
         }
@@ -344,15 +378,125 @@ namespace Pendulum
 
         }
 
-        private void checkBoxSound_CheckedChanged(object sender, EventArgs e)
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (checkBoxSound.Checked)
+            if (e.Control && e.KeyCode == Keys.OemOpenBrackets)
             {
-                pictureBoxSound.Image = Properties.Resources.SoundOn;
+                buttonMinus1.PerformClick();
+            }
+            else if (e.Control && e.KeyCode == Keys.OemCloseBrackets)
+            {
+                buttonPlus1.PerformClick();
+            }
+            else if (e.Control && e.KeyCode == Keys.Enter && buttonStart.Enabled == true)
+            {
+                buttonStart.PerformClick();
+            }
+            else if (e.Control && e.KeyCode == Keys.Enter && buttonStop.Enabled == true)
+            {
+                buttonStop.PerformClick();
+            }
+            else if (e.Control && e.KeyCode == Keys.S)
+            {
+                buttonSound.PerformClick();
+            }
+        }
+
+        private void buttonSound_Click(object sender, EventArgs e)
+        {
+            if (buttonSound.BackColor == Color.Red)
+            {
+                buttonSound.BackgroundImage = Properties.Resources.SoundOn;
+                buttonSound.BackColor = Color.Lime;
+            }
+            else if (buttonSound.BackColor == Color.Lime)
+            {
+                buttonSound.BackgroundImage = Properties.Resources.SoundOff;
+                buttonSound.BackColor = Color.Red;
+            }
+        }
+
+        private void radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            boolOvertime = false;
+
+            RadioButton btn = (RadioButton)sender;
+            if (btn != null && btn.Checked)
+            {
+                switch (btn.Name)
+                {
+                    case "radioButtonTreasures" :
+                        m = 10;
+                        break;
+                    case "radioButtonDigging":
+                        m = 8;
+                        break;
+                    case "radioButtonBibleReading":
+                        m = 4;
+                        break;
+                    case "radioButtonInitialCall":
+                        m = 2;
+                        break;
+                    case "radioButtonReturnVisit":
+                        m = 4;
+                        break;
+                    case "radioButtonBibleStudy":
+                        m = 6;
+                        break;
+                    case "radioButtonPublicTalk":
+                        m = 30;
+                        break;
+                }
+            }
+
+            s = 0;
+
+            intPublicM = m;
+            intPublicS = s;
+
+            if (m < 1)
+            {
+                m = 1;
+                intPublicM = m;
+            }
+
+            if (m < 10)
+            {
+                labelLength.Text = "Talk Length: 0" + Convert.ToString(m) + ":00";
+                labelTime.Text = "0" + Convert.ToString(m) + ":00";
             }
             else
             {
-                pictureBoxSound.Image = Properties.Resources.SoundOff;
+                labelLength.Text = "Talk Length: " + Convert.ToString(m) + ":00";
+                labelTime.Text = Convert.ToString(m) + ":00";
+            }
+
+            progressBarTime.Maximum = m * 60;
+            progressBarTime.Value = 0;
+
+            labelTime.ForeColor = Color.Lime;
+            labelLength.ForeColor = Color.Lime;
+            labelClock.ForeColor = Color.Lime;
+
+            f.UpdateLabel(this.labelTime.Text, (m * 60), 0);
+        }
+
+        private void timerClock_Tick(object sender, EventArgs e)
+        {
+            DateTime dateTime = DateTime.Now;
+            this.labelClock.Text = "Current Time: " + dateTime.ToString("HH:mm:ss");
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you would like to quit Pendulum?", "Quit Pendulum?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+            else if (result == DialogResult.Yes)
+            {
+                e.Cancel = false;
             }
         }
     }
